@@ -1,0 +1,63 @@
+.main-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    /* background-color: #e57513; */
+    background-color: #fff;
+    /* color: #fff;     */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+.logo{
+    display: flex;
+    align-items: center;
+}
+.logo h1{
+    margin-left: 1rem; 
+     color: black;
+}
+.logo img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}  
+.main-pages{
+    display: flex;
+    align-items: center;
+    gap: 3rem;
+    font-size: 20px;
+    font-weight: 500;   
+    cursor: pointer;
+    color: #120c09;    
+}
+.main-nav{
+    display: flex;
+    align-items: center;
+    gap: 1rem;  
+} 
+.main-nav button{
+    padding: 0.5rem 1rem;
+    background-color: #241e18;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.main-nav button:hover{
+    background-color: #fff;
+    color: #241e18;
+}
+.main-nav img{
+    cursor: pointer;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; 
+}   
+.homes-link{
+    text-decoration: none;
+    color: black;
+}

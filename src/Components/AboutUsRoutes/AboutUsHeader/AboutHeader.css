@@ -1,0 +1,9 @@
+.about-header-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    top: 600px;
+    width: 100%;
+    z-index: 1;  
+}

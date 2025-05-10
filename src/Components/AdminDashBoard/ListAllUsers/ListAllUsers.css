@@ -1,0 +1,91 @@
+.list-users-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;  
+    padding: 1rem;  
+}
+.users-count h1{
+    width: 100%;
+    margin-left: 1.7rem;
+    font-size: 30px;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    color: black;
+}
+.all-zestyzoomUsers{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: start;
+    margin-left: 2rem;
+}
+.user-card{
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 340px;
+    height: 600px;
+    background-color: #fff;
+}
+.user-card .cover-image img{
+    width: 340px;
+    position:absolute;
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.user-card .avatar-image img{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    position: relative;
+    top: 50px;
+    left: 20px;
+}
+.user-card h2{
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-left: .7rem;
+    padding: .25rem;
+    width: 100%;
+    position: relative;
+    top: 100px;
+    gap: .5rem;
+}
+.user-card p{
+    font-size: 16px;
+    color: #666;
+    margin-left: .7rem;
+    width: 100%;
+    position: relative;
+    top: 100px;
+    padding: .25rem;
+}
+.user-card-btn{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    gap: 1rem;
+    position: relative;
+    top: 100px;
+    padding-top: 1rem;
+}   
+.user-card-btn button{
+    padding: .7rem 1.3rem;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: black;
+    color: #fff;
+}
+.user-card-btn button:hover{
+    background-color: #fff;
+    color: black;
+    box-shadow: 0 2px 4px rgba(82, 128, 171, 0.967);    
+}

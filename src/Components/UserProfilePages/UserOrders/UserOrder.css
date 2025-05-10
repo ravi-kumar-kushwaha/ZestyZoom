@@ -1,0 +1,126 @@
+.user-order-main-container{
+    position: fixed;
+    width: 100%;
+    height: 860px;
+    overflow: auto;
+    z-index: 999;
+    top: 5.2rem;
+    left: 0;
+    right: 0;
+    /* padding-left: 35%; */
+    background-color: rgba(247, 243, 243,.96);
+}
+.handle-order button{
+    width: 50px;
+    height: 30px;
+    margin: 1rem;
+    border: none;
+    border-radius: 5%;
+    color: red;
+    font-size: 12px;
+    font-weight: 600;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(213, 129, 129, 1.1);
+    cursor: pointer;
+}
+.handle-order button:hover{
+    color: white;
+    background-color: rgb(235, 34, 34);
+}  
+.user-order-heading h1{
+    font-size: 35px;
+    font-weight: 700;
+    color: #333;
+    width: 100%;
+    text-align: center;
+}   
+.user-order-items{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+.user-order-item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    gap: .5rem;
+    padding: 1rem;
+}
+.user-order-item-details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 30%;
+    gap: .5rem;
+    padding: 1rem;
+    border: 1px solid #e2e8ec;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(176, 241, 245, 4.2);
+}
+.user-order-item-details h1{
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+}
+.user-order-item-details p{
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}
+.user-order-item-items{
+    display: flex;
+    flex-direction: row;
+    /* align-items: center; */
+    justify-content: space-between;
+    width: 70%;
+    gap: 2.5rem;
+    padding: 1rem;
+}
+.user-order-item-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* align-items: center; */
+    width: 35%;
+    gap: .5rem;
+    padding: 1rem;
+    border: 1px solid #e2e8ec;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(176, 241, 245, 4.2);   
+}
+.user-order-item-item img{
+    width: 100px;
+    height: 100px;
+    margin-bottom: 1rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.user-order-item-item p{
+   width: full;
+   font-size: 16px;
+   font-weight: 500;
+   color: #333;
+   padding: .1rem;
+}
+.no-order-found{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: .5rem;
+    padding: 1rem;
+}
+.no-order-found h1{
+    font-size: 25px;
+    font-weight: 600;
+    color: #333;
+    color: red;
+}
+.no-order-found p{
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+}

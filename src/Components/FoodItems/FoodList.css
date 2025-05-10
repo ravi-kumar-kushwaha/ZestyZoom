@@ -1,0 +1,122 @@
+.food-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2rem;
+    /* background-color: #5c1902f2; */
+    background-color: hsl(0, 0%, 100%);
+    min-height: 100vh;
+    
+}
+.food-list h1{
+    font-size: 2rem;
+    color:rgb(33, 32, 32);
+    align-items: start;
+    padding-left: 3rem;
+    padding-bottom: 2rem;
+    margin-bottom: 1rem; 
+    width: 100%;   
+}
+.all-food-items{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;   
+}
+.food-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 312px;
+    /* max-height: 417px; */
+    max-height: 460px;
+    /* border: 1px solid #ccc; */
+    /* border-radius: 30px 30px 5px 5px;*/
+    /* box-shadow: 0 3px 6px rgba(100, 170, 200, 1.7); 
+    transition: transform 0.3s ease-in-out;  */
+    margin-bottom: 2rem;
+}
+.food-item:hover img{
+    transform: scale(0.96); 
+}
+
+.food-item img{
+    width: 312px;
+    height: 260px;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border-radius: 30px 30px 5px 5px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.food-item h2{
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    width: 100%;
+    padding-left: .7rem;
+}
+
+.prices {
+    display: flex;
+    gap: 1rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    text-align: left;
+    justify-content: left;
+    width: 100%;
+    padding-left: 0.7rem;
+   
+}
+.prices .price{
+    text-decoration: line-through;
+}
+.discounted-price{
+    font-weight: 500;
+    color: #666;
+    font-size: 1.2rem;
+    
+}
+.prices .discount1{
+    font-weight: 400;
+    color: #e43124;
+    font-size: .9rem;
+    position: relative;
+}
+.food-item .discount{
+    font-weight: 700;
+    color: #e43124;
+    font-size: 1.2rem;
+    position: relative;
+}
+.food-item p{
+    width: 312px;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    color: #666;  
+    padding-left: 0.7rem;  
+    margin-bottom: .5rem;
+}
+.addto-cart{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.addto-cart button{
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #241e18;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease-in-out;
+}
+.addto-cart button:hover{
+    background-color: #fff;
+    color: #241e18;
+}   

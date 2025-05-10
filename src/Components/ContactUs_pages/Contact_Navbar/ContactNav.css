@@ -1,0 +1,70 @@
+.contact-nav-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px rgba(241, 162, 146, 0.489);
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+.contact-logo{
+    display: flex;
+    align-items: center;
+}
+.contact-logo img{
+ width: 60px;
+ height: 60px;
+ border-radius: 50%;
+}
+.contact-logo h1{
+font-size: 30px;
+font-weight: 600;
+color: black;
+padding-left: 1rem;
+}
+.contact-search{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.contact-search input{
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;   
+    width: 500px; 
+}
+.contact-detail{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.contact-detail .contact-logout{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.contact-detail .contact-logout img{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+.contact-detail .contact-logout button{
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #fff;
+    color: black;
+    font-weight: 600;
+}
+.contact-detail .contact-logout button:hover{
+    background-color: black;
+    color: #fff;
+    box-shadow: 0 2px 4px rgba(82, 128, 171, 0.967);
+}       

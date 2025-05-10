@@ -1,0 +1,59 @@
+.edit-food-item-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 1rem; 
+}
+.edit-food-item h1{
+    text-align: center;
+    font-size: 35px;
+    font-weight: 600;
+    color: black;
+    margin-top: 1rem;
+}
+
+
+.edit-food-item-form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+.edit-food-item-form form{
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+.edit-food-item-form form input{
+    width: 100%;
+    padding: .9rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    padding-left: 1rem;
+}
+.edit-food-item-form form select{
+    width: 100%;
+    padding: .9rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;
+    padding-left: 1rem;
+}
+.edit-food-item-form form  button{
+    width: 100%;
+    padding: 0.9rem;
+    border: none;
+    border-radius: 10px;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}   
+.edit-food-item-form form  button:hover{
+    background-color: #fff;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(82, 128, 171, 0.967);
+    /* border: 1px solid rgb(51, 83, 174);         */
+} 

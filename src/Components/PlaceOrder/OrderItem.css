@@ -1,0 +1,65 @@
+.order-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* gap: 1rem; */
+    position: fixed;
+    left: 0;
+    width: 100%;
+    background: rgba(255,255,255,0.97);
+    z-index: 2;
+    top:82px;
+    box-shadow: 0 2px 4px rgba(255,223,223,2.98);
+    /* background-color: rgb(250, 237, 220); */
+}
+.order-item .close{
+    align-items: end;
+    width: 100%;
+    /* margin-top: 1rem; */
+}
+.order-item h2{
+    width: 100%;
+}
+.order-item form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    gap: .7rem;
+}
+.order-item form input{
+    height: 35px;
+    width: 400px;
+    border: 1px solid rgb(126, 123, 123);
+    border-radius: 10px;
+    font-size: 16px;
+    padding-left: .7rem;
+   
+}
+.order-item form select{
+    height: 35px;
+    width: 400px;
+    border: 1px solid rgb(126, 123, 123);
+    border-radius: 10px;
+    font-size: 16px;
+    padding-left: .7rem;
+}
+.order-item form button{
+    height: 35px;
+    width: 150px;
+    /* border: 1px solid rgb(126, 123, 123); */
+    border-radius: 10px;
+    font-size: 16px;
+    padding-left: .7rem;
+    background-color: black;
+    color: white;
+    border: none;
+    margin-bottom: 4rem;
+}
+.order-item form button:hover{
+    background-color: white;
+    color: black;
+    box-shadow: 0 2px 4px rgba(128, 185, 239, 0.967);
+}

@@ -1,0 +1,85 @@
+.emergency-contact-container{
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    justify-content: center;
+}
+.emergency-navbar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #cb202d;
+    box-shadow: 0px 2px 4px rgba(241, 162, 146, 0.489);
+    width: 100%;        
+}
+.emergency-logo{
+    display: flex;
+    align-items: center;
+}
+.emergency-logo img{
+ width: 60px;
+ height: 60px;
+ border-radius: 50%;
+}
+.emergency-logo h1{
+font-size: 30px;
+font-weight: 600;
+color: white;
+padding-left: 1rem;
+}
+.emergency-order button{
+    padding: .9rem;
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;  
+    cursor: pointer;
+    border: none;
+    background-color: rgba(225, 58, 58, 0.982);      
+}
+.emergency-order button:hover{
+    color: black;   
+    background-color: rgba(248, 245, 245, 0.982); 
+}
+.emergency-header {
+ width: 95%;
+ background-color: #cb202d;
+ color: white;
+ padding: 8rem;
+ margin-top: 4rem;
+ border-radius: 8px;
+}
+.emergency-header h1{
+    font-size: 45px;
+    font-weight: 500;
+   text-align: center;
+}
+.warning h3{
+    width: 100%;
+    padding: .9rem;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-size: 16px;  
+    font-weight: 500;   
+}
+.warning h1 span{
+    color: red;
+}
+.warning p{
+    width: 100%;
+    padding: .9rem;
+    font-size: 16px;  
+    font-weight: 500; 
+    color: rgb(95, 86, 86);  
+}  
+#safety-emergency{
+    margin-left: 80px;
+} 
+.link{
+    text-decoration: none;
+    /* color: red; */
+}
+.link-order{
+    text-decoration: none;
+    color: black;
+}
