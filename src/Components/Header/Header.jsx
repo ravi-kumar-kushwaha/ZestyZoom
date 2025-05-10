@@ -45,8 +45,7 @@ const Header = ({handleProfile}) => {
               token ? (
             <button onClick={handleLogOut}>LogOut</button>
             ):(
-              // <button onClick={() => window.location.href = "/signin"}>SignIn</button>
-                 <Link to="/signin" className='homes-link'> <button>SignIn</button></Link>      
+              <button onClick={() => window.location.href = "/signin"}>SignIn</button>     
             )
 }
         </nav>
