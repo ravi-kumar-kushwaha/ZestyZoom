@@ -37,6 +37,7 @@ Zesty Zoom is a full-stack web application built with the MERN stack (MongoDB, E
 ### Frontend:
 - React (with Hooks and Context API)
 - Axios for API calls
+- razorpay for payment gateway
 - React Router Dom for routing
 - CSS (Bootstrap)
 
@@ -45,6 +46,7 @@ Zesty Zoom is a full-stack web application built with the MERN stack (MongoDB, E
 - MongoDB with Mongoose ODM
 - JWT for secure auth and token verification
 - bcrypt for password hashing
+- Payment gateway integration (Razorpay)
 - Multer + Cloudinary for image uploads
 
 ## Folder Structure
@@ -235,8 +237,9 @@ This project is open-source and available under the MIT License.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-Your Name - [ravikumarkush1212@gmail.com](mailto:your.email@example.com)  
-Project Link: [https://zestyzoom.onrender.com](https://github.com/yourusername/zesty-zoom)
+Name - Ravi Kumar Kushwaha
+Email - [ravikumarkush1212@gmail.com](mailto:your.email@example.com)  
+Project Link: [https://zestyzoom.onrender.com]
 
 ---
 
