@@ -75,7 +75,7 @@ Zesty Zoom is a full-stack web application built with the MERN stack (MongoDB, E
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/zesty-zoom.git
+   [git clone https://github.com/yourusername/zesty-zoom.git](https://github.com/ravi-kumar-kushwaha/ZestyZoom.git)
    cd zesty-zoom
    ```
 
@@ -110,7 +110,7 @@ Zesty Zoom is a full-stack web application built with the MERN stack (MongoDB, E
 
    # In a new terminal, run frontend
    cd client
-   npm start
+   npm run dev
    ```
 
 5. Access the application
@@ -235,11 +235,11 @@ This project is open-source and available under the MIT License.
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Contact
-Your Name - [your.email@example.com](mailto:your.email@example.com)  
-Project Link: [https://github.com/yourusername/zesty-zoom](https://github.com/yourusername/zesty-zoom)
+Your Name - [ravikumarkush1212@gmail.com](mailto:your.email@example.com)  
+Project Link: [https://zestyzoom.onrender.com](https://github.com/yourusername/zesty-zoom)
 
 ---
 
 <p align="center">
-  Made with ❤️ by Your Name
+  Made with ❤️ by Ravi Kumar Kushwaha
 </p>
