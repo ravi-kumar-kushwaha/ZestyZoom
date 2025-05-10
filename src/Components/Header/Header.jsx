@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import './Header.css'
 import logo from '../../assets/images/logo.jpeg'
 import CartContext from '../Store/CartContext'
@@ -12,6 +13,7 @@ const Header = ({handleProfile}) => {
   },0);
 
   const handleShowCart = () => {
+    const navigate = useNavigate();
     progressCtx.showCart();
   }
   const auth = localStorage.getItem("user");
@@ -45,7 +47,8 @@ const Header = ({handleProfile}) => {
               token ? (
             <button onClick={handleLogOut}>LogOut</button>
             ):(
-              <button onClick={() => window.location.href = "/signin"}>SignIn</button>     
+              // <button onClick={() => window.location.href = "/signin"}>SignIn</button>  
+                <button onClick={() => navigate("/signin")}>SignIn</button>
             )
 }
         </nav>
