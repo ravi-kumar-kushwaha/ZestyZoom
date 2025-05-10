@@ -6,6 +6,8 @@ import CartContext from '../Store/CartContext'
 import ProgressContext from '../Store/ProgressContext'
 import { Link } from 'react-router-dom'
 const Header = ({handleProfile}) => {
+
+   const navigate = useNavigate();
   const cartCtx = useContext(CartContext);
   const progressCtx = useContext(ProgressContext);
   const TotalCartItem = cartCtx.items.reduce((totalNoOfItems,item)=>{
@@ -13,7 +15,6 @@ const Header = ({handleProfile}) => {
   },0);
 
   const handleShowCart = () => {
-    const navigate = useNavigate();
     progressCtx.showCart();
   }
   const auth = localStorage.getItem("user");
