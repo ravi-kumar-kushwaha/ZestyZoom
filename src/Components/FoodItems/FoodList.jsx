@@ -4,9 +4,14 @@ import CurrencyFormatter from '../Utils/CurencyFormrter/CurrencyFormatter';
 import CartContext from '../Store/CartContext';
 import { useContext } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const FoodList = ({ foodItems }) => {
 
+     const navigate = useNavigate();
+    const auth = localStorage.getItem("user");
+    const user = JSON.parse(auth);
+    
     const cartCtx = useContext(CartContext);
 
     const handleAddToCart = (foodItem) => {
@@ -28,9 +33,12 @@ const FoodList = ({ foodItems }) => {
                                 <span className='price'>Price : {CurrencyFormatter.format(foodItem.price)}</span>
                                 <span className="discounted-price">{CurrencyFormatter.format(foodItem.discountedPrice)}</span>
                                 </div>
-                                <div className="addto-cart">
+                                <div className="addto-cart">{
+                                    user ?
                                     <button onClick={() => handleAddToCart(foodItem)}>Add to Cart</button>
-                                </div>
+                                    :
+                                    <button onClick={() => navigate("/signin")}>Add to Cart</button>
+                                }</div>
                             </div>
                         )
                     })
