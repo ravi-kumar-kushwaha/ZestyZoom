@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import './Profile.css'
 const Profile = ({ showProfile, handleProfile ,handleUserInfo,handleOrder}) => {
+
+    const navigate = useNavigate();
     const auth = localStorage.getItem("user");
     const user = JSON.parse(auth);
    
@@ -27,7 +30,7 @@ const Profile = ({ showProfile, handleProfile ,handleUserInfo,handleOrder}) => {
                         {
                             user && (user?.role === 'admin' || user?.role === 'partner') ?
                                 <div className="admin-dashboard-profile">
-                                    <button onClick={() => { window.location.href = 'https://zestyzoom.onrender.com/admin' }}>Go to Dashboard</button>
+                                    <button onClick={() => navigate('https://zestyzoom.onrender.com/admin')}>Go to Dashboard</button>
                                 </div>
                                 : null
                         }
