@@ -40,11 +40,11 @@ const Footer = () => {
         <div className="footer-right-right">
             <h2>Social links</h2>
             <div className="social-link">
-                <img src={linkdin} alt="" />
-                <img src={x} alt="" />
-                <img src={facebook} alt="" />
-                <img src={youtub} alt="" />
-                <img src={instagram} alt="" />
+                <a href="https://www.linkedin.com/in/ravikumarkushwaha/"><img src={linkdin} alt="" /></a>
+                <a href="https://x.com"><img src={x} alt="" /></a>
+                <a href="https://www.facebook.com/ravikumar.kushwaha.31542"><img src={facebook} alt="" /></a>
+                <a href="https://www.youtube.com"><img src={youtub} alt="" /></a>
+                <a href="https://www.instagram.com/ravikumarkushwaha705/"><img src={instagram} alt="" /></a>
             </div>
             <div className="app">
                 <img src={appStore} alt="" />
