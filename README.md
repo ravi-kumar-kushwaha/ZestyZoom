@@ -202,6 +202,7 @@ Zesty Zoom is a full-stack web application built with the MERN stack (MongoDB, E
 - `PUT /api/admin/edit/:id` - Update food item
 - `DELETE /api/admin/delete/:id` - Delete food item
 - `GET /api/admin/list-order` - Get all orders (admin)
+- `GET /api/admin/list-users` - Get all users on ZestyZoom
 - `PUT /api/admin/edit-order/:id` - Update Order
 - `GET /api/admin/profile` - Admin Profile
 
