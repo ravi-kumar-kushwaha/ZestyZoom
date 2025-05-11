@@ -27,7 +27,7 @@ const Profile = ({ showProfile, handleProfile ,handleUserInfo,handleOrder}) => {
                         {
                             user && (user?.role === 'admin' || user?.role === 'partner') ?
                                 <div className="admin-dashboard-profile">
-                                    <button onClick={() => { window.location.href = 'http://localhost:5173/admin' }}>Go to Dashboard</button>
+                                    <button onClick={() => { window.location.href = 'https://zestyzoom.onrender.com/admin' }}>Go to Dashboard</button>
                                 </div>
                                 : null
                         }
