@@ -30,7 +30,7 @@ const Profile = ({ showProfile, handleProfile ,handleUserInfo,handleOrder}) => {
                         {
                             user && (user?.role === 'admin' || user?.role === 'partner') ?
                                 <div className="admin-dashboard-profile">
-                                    <button onClick={() => navigate('https://zestyzoom.onrender.com/admin')}>Go to Dashboard</button>
+                                    <button onClick={() => navigate('/admin')}>Go to Dashboard</button>
                                 </div>
                                 : null
                         }
