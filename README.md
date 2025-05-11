@@ -1,7 +1,7 @@
 # Zesty Zoom MERN Stack E-Commerce Food Delivery Website
 
 <p align="center">
-  <img src="[https://via.placeholder.com/200?text=Zesty+Zoom+Logo](http://localhost:5173/src/assets/images/logo.jpeg)" alt="Zesty Zoom Logo" width="200"/>
+  <img src="http://localhost:5173/src/assets/images/logo.jpeg" alt="Zesty Zoom Logo" width="200"/>
 </p>
 
 <p align="center">
