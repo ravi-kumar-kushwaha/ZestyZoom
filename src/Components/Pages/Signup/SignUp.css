@@ -20,7 +20,7 @@
     top: 5.2rem;
     z-index: 999;
     transition: right 0.5s ease-in-out;
-    max-height: 740px;
+    max-height: 87vh;
     overflow: auto;
 }
 .signup-heading h1{
