@@ -163,30 +163,41 @@ Zesty Zoom is a full-stack web application built with the MERN stack (MongoDB, E
 ## API Documentation
 
 ### User Endpoints
-- `POST /api/users/register` - Register a new user
-- `POST /api/users/login` - Login user
-- `GET /api/users/profile` - Get user profile
-- `PUT /api/users/profile` - Update user profile
+- `POST /api/v1/user/signup` - Register a new user
+- `POST /api/v1/user/signin` - Login user
+- `GET /api/user/single-user/:id` - Get user profile
+- `PUT /api/user/update-user-details/:id` - Update user profile
+- `PUT /api/user/update-user-coverImage/:id` - Update user coverImage
+- `PUT /api/user/update-user-avatar/:id` - Update user coverImage
+- `POST /api/user/refresh-token` - refresh token
+- 'GET /api/v1/user/all-users' - get all users
 
 ### Food Items Endpoints
-- `GET /api/foods` - Get all food items
-- `GET /api/foods/:id` - Get food item by ID
+- `POST /api/v1/user/insert-all-foods` - Insert all foods
+- `POST /api/v1/user/add-food` - Create Food item
+- `GET /api/v1/user/get-all-foods` - Get all food items
+- `GET /api/v1/user/get-food/:id` - Get food item by ID
+- `PUT /api/v1/user/update-foodItem/:id` Update food item by ID
+- `DELETE /api/v1/user/delete-food/:id` Delete food item by ID
 - `GET /api/foods/category/:categoryId` - Get food items by category
 
 ### Cart Endpoints
-- `GET /api/cart` - Get user cart
-- `POST /api/cart` - Add item to cart
-- `PUT /api/cart/:itemId` - Update cart item
-- `DELETE /api/cart/:itemId` - Remove item from cart
+- `GET /api/v1/user/get-all-cart-items` - Get user cart
+- `POST /api/v1/user/add-item-to-cart` - Add item to cart
+- `GET /api/v1/user/get-user-cart-items` - Get user cart item
+- `DELETE /api/v1/user/remove-item-from-cart/:id` - Remove item from cart
 
 ### Order Endpoints
-- `POST /api/orders` - Create new order
-- `GET /api/orders` - Get all user orders
-- `GET /api/orders/:id` - Get order details
-- `PUT /api/orders/:id/pay` - Update order payment status
+- `POST /api/v1/user/place-order` - Create new order
+- `GET /api/v1/user/user-orders` - Get all orders of a user
+- `GET /api/v1/user/single-order/:id` - Get order details
+- `PUT /api/v1/user/single-order/:id` - Update order status
+- `DELETE /api/v1/user/delete-orderItem/:id` - Delete order by ID
+- `POST /api/v1/user/verify-order` - Verify Order
+- `GET /api/v1/user/all-orders` - Get all user Orders
 
 ### Admin Endpoints
-- `POST /api/admin/foods` - Add new food item
+- `POST /admin/add-product` - Add new food item
 - `PUT /api/admin/foods/:id` - Update food item
 - `DELETE /api/admin/foods/:id` - Delete food item
 - `GET /api/admin/orders` - Get all orders (admin)
