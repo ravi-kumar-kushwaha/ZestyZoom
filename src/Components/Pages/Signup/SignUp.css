@@ -5,13 +5,9 @@
    
 }
 .signup-container{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
-    gap: 1rem;
     background-color: rgba(254, 254, 254, 0.9);
-    padding-top: 300px;
+    padding: 15px 80px ;
     /* margin-top: 7.5rem; */
     box-shadow: 0 2px 4px rgba(48, 32, 2, 0.7);
     border-radius: 20px; 
@@ -24,6 +20,7 @@
     overflow: auto;
 }
 .signup-heading h1{
+    text-align: center;
     padding-top: 20px;
  font-size: 35px;
  font-weight:700;
