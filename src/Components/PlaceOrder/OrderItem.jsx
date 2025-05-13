@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react';
 import CurrencyFormatter from '../Utils/CurencyFormrter/CurrencyFormatter';
-import { useContext } from 'react';
 import CartContext from '../Store/CartContext';
 import ProgressContext from '../Store/ProgressContext';
-import "./OrderItem.css"
+import "./OrderItem.css";
 import axios from 'axios';
+
 const OrderItem = () => {
   const [data, setData] = useState({
     name: "",
@@ -18,20 +18,19 @@ const OrderItem = () => {
     postalCode: "",
     paymentMethod: ""
   });
+  
+  const [orderPlaced, setOrderPlaced] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
   const user = localStorage.getItem("user");
   const userId = user ? JSON.parse(user)._id : null;
-  // if (!userId) {
-  //   console.log("User not found");
-  // }
-  //tracking order placed  
-  const [orderPlaced, setOrderPlaced] = useState(false);
-
+  
   const cartCtx = useContext(CartContext);
   const progressCtx = useContext(ProgressContext);
 
-  const totalCartPrice = cartCtx.items.reduce((totalNoOfItems, item) => {
-    return totalNoOfItems + item.discountedPrice * item.quantity;
-  }, 0);
+  const totalCartPrice = cartCtx?.items?.reduce((totalNoOfItems, item) => {
+    return totalNoOfItems + item?.discountedPrice * item?.quantity;
+  }, 0) || 0;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -47,93 +46,151 @@ const OrderItem = () => {
 
   const handleFinishOrder = () => {
     progressCtx.hideCheckout();
-    setOrderPlaced(false); // Hide the success message
+    setOrderPlaced(false);
     cartCtx.removeCartItems();
   };
 
   const itemId = cartCtx.items.map((item) => ({
     cartItemIds: item._id,
-    // quantity: item.quantity
   }));
 
-  // console.log("itemId:", itemId);
+  const validateForm = () => {
+    if (!data.name || !data.email || !data.mobile || !data.address || !data.paymentMethod) {
+      alert("Please fill all required fields");
+      return false;
+    }
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      alert("Please enter a valid email address");
+      return false;
+    }
+    
+    if (data.mobile.length < 10) {
+      alert("Please enter a valid phone number");
+      return false;
+    }
+    
+    return true;
+  };
+
   const handlePlaceOrder = async (e) => {
     e.preventDefault();
-    if (!data.paymentMethod) {
-      alert("Please select a payment method.");
+    
+    if (!validateForm()) {
       return;
     }
-    const getKey = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/get-key`);
-    const key = getKey.data.key;
-    // console.log("key", key);
+    
+    setIsSubmitting(true);
+    
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_URL}/place-order`,
-        {
-          userId,
-          itemId,
-          quantity: cartCtx.items.map((item) => item.quantity),
-          price: totalCartPrice * 100,
-          ...data
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("token")}`
-          },
+      const orderData = {
+        userId,
+        itemId,
+        quantity: cartCtx.items.map((item) => item.quantity),
+        price: totalCartPrice * 100,
+        ...data
+      };
+      
+      if (data.paymentMethod === "cod") {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/place-cod-order`,
+          orderData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+          }
+        );
+        
+        if (response.data.success) {
+          setOrderPlaced(true);
+          setData({
+            name: "",
+            email: "",
+            mobile: "",
+            address: "",
+            street: "",
+            landmark: "",
+            state: "",
+            country: "",
+            postalCode: "",
+            paymentMethod: ""
+          });
+          cartCtx.removeCartItems();
         }
-      );
-      console.log(response.data.checkoutId);
-      const options = {
-        key: key,
-        amount: response.data.data.price,
-        currency: "INR",
-        name: "ZestyZoom",
-        description: "Food Delivery App",
-        // order_id: response.data.data.id,
-        // checkoutId: response.data.checkoutId,
-        // order_QQi39HFK3xucBN
-        order_id: response.data.checkoutId,
-        callback_url: `${import.meta.env.VITE_BACKEND_BASE_URL}/verify-order`,
-        Image:"http://localhost:5173/src/assets/images/logo.jpeg",
-        prefill: {
-          name: data.name,
-          email: data.email,
-          contact: data.mobile,
-        },
-        notes: {
-          address: data.address,
-          street: data.street,
-          landmark: data.landmark,
-        },
-        theme: {
-          color: "#3399cc",
-          hide_topbar: false,
-        },
-      }
-      const razorpay = new window.Razorpay(options);
-      razorpay.open();
-      if (response.data.success) {
-        alert("Order Placed Successfully");
-        console.log("response", response);
-        setOrderPlaced(true);
-        setData({
-          name: "",
-          email: "",
-          mobile: "",
-          address: "",
-          street: "",
-          landmark: "",
-          state: "",
-          country: "",
-          postalCode: "",
-          paymentMethod: ""
+      } 
+      
+      else if (data.paymentMethod === "razorpay") {
+        const keyResponse = await axios.get(`${import.meta.env.VITE_BACKEND_BASE_URL}/get-key`);
+        const key = keyResponse.data.key;
+        
+        const response = await axios.post(
+          `${import.meta.env.VITE_BACKEND_BASE_URL}/place-order`,
+          orderData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+          }
+        );
+        
+        if (!response.data || !response.data.checkoutId) {
+          throw new Error("Invalid response from server");
+        }
+        
+        const options = {
+          key: key,
+          amount: response.data.data.price,
+          currency: "INR",
+          name: "ZestyZoom",
+          description: "Food Delivery App",
+          order_id: response.data.checkoutId,
+          callback_url: `${import.meta.env.VITE_BACKEND_BASE_URL}/verify-order`,
+          image: `${import.meta.env.VITE_FRONTEND_URL}/assets/images/logo.jpeg`, // Fixed image path
+          prefill: {
+            name: data.name,
+            email: data.email,
+            contact: data.mobile,
+          },
+          notes: {
+            address: data.address,
+            street: data.street,
+            landmark: data.landmark,
+          },
+          theme: {
+            color: "#3399cc",
+            hide_topbar: false,
+          },
+        };
+        
+        const razorpay = new window.Razorpay(options);
+        razorpay.on('payment.success', function() {
+          setOrderPlaced(true);
+          setData({
+            name: "",
+            email: "",
+            mobile: "",
+            address: "",
+            street: "",
+            landmark: "",
+            state: "",
+            country: "",
+            postalCode: "",
+            paymentMethod: ""
+          });
+          cartCtx.removeCartItems();
         });
-        cartCtx.removeCartItems();
-      } else {
-        console.log("error");
+        
+        razorpay.open();
       }
     } catch (error) {
-      alert("Internal Server Error:" + error.message);
+      console.error("Error placing order:", error);
+      alert("Failed to place order: " + (error.response?.data?.message || error.message));
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -153,7 +210,7 @@ const OrderItem = () => {
         progressCtx.progress === "checkout" && (
           <form onSubmit={handlePlaceOrder}>
             <div className="close">
-              <button onClick={handleCheckOutClose}>Close</button>
+              <button type="button" onClick={handleCheckOutClose}>Close</button>
             </div>
             <div className="checkout">
               <h1>Place Your Order</h1>
@@ -168,28 +225,32 @@ const OrderItem = () => {
               name="name"
               value={data.name}
               onChange={handleChange}
-              placeholder="Enter Your Name"
+              placeholder="Enter Your Name *"
+              required
             />
             <input
               type="email"
               name="email"
               value={data.email}
               onChange={handleChange}
-              placeholder="Enter Your Email"
+              placeholder="Enter Your Email *"
+              required
             />
             <input
               type="tel"
               name="mobile"
               value={data.mobile}
               onChange={handleChange}
-              placeholder="Enter Your Mobile Number"
+              placeholder="Enter Your Mobile Number *"
+              required
             />
             <input
               type="textarea"
               name="address"
               value={data.address}
               onChange={handleChange}
-              placeholder="Address (House No, Building, Street, Area)*"
+              placeholder="Address (House No, Building, Street, Area) *"
+              required
             />
             <input
               type="text"
@@ -211,6 +272,7 @@ const OrderItem = () => {
               value={data.state}
               onChange={handleChange}
               placeholder="Enter Your State"
+              required
             />
             <input
               type="text"
@@ -218,6 +280,7 @@ const OrderItem = () => {
               value={data.country}
               onChange={handleChange}
               placeholder="Enter Your Country"
+              required
             />
             <input
               type="text"
@@ -225,27 +288,30 @@ const OrderItem = () => {
               value={data.postalCode}
               onChange={handleChange}
               placeholder="Enter Your Postal Code"
+              required
             />
-            <select name="paymentMethod" value={data.paymentMethod} onChange={handleChange} id="paymentMethod">
-              <option value="">Select Payment Method</option>
+            <select 
+              name="paymentMethod" 
+              value={data.paymentMethod} 
+              onChange={handleChange} 
+              id="paymentMethod"
+              required
+            >
+              <option value="">Select Payment Method *</option>
               <option value="razorpay">Razorpay</option>
               <option value="cod">Cash On Delivery</option>
             </select>
-            <button type="submit">Place Order</button>
+            <button 
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Processing..." : "Place Order"}
+            </button>
           </form>
         )
       )}
     </div>
   );
 };
+
 export default OrderItem;
-
-
-
-
-
-
-
-
-
-
