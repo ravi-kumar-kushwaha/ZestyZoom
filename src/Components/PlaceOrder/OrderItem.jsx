@@ -149,7 +149,7 @@ const OrderItem = () => {
           description: "Food Delivery App",
           order_id: response.data.checkoutId,
           callback_url: `${import.meta.env.VITE_BACKEND_BASE_URL}/verify-order`,
-          image: `${import.meta.env.VITE_FRONTEND_URL}/assets/images/logo.jpeg`, // Fixed image path
+          image: "http://localhost:5173/src/assets/images/logo.jpeg",
           prefill: {
             name: data.name,
             email: data.email,
