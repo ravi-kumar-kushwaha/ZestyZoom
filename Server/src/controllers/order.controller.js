@@ -5,135 +5,262 @@ import Food from "../models/food.model.js";
 import crypto from "crypto";
 import User from "../models/user.model.js";
 
-
 const razorpay = new Razorpay({
     key_id: process.env.RAZORPAY_KEY_ID,
     key_secret: process.env.RAZORPAY_KEY_SECRET
 });
+
+//place order using razorpay
 const placeOrder = async (req, res) => {
     try {
         const userId = req.user?._id;
-        // console.log("userId:", userId);
+
         if (!userId) {
-            return res.status(400).json({
-                message: "UserId is required to create order!",
+            return res.status(401).json({
+                message: "User authentication required",
                 success: false
-            })
+            });
         }
-        const { itemId, name, email,
-            mobile, address,
-            street, landmark,
-            state, country,
-            postalCode, paymentMethod
+
+        const { 
+            itemId, 
+            quantity,
+            name, 
+            email,
+            mobile, 
+            address,
+            street, 
+            landmark,
+            state, 
+            country,
+            postalCode, 
+            paymentMethod 
         } = req.body;
-        if (!itemId ||
-            !name || !email ||
-            !mobile || !address ||
-            !street || !landmark ||
-            !state || !country ||
-            !postalCode || !paymentMethod
-        ) {
+
+       
+        if (!itemId || !name || !email || !mobile || !address || 
+            !state || !country || !postalCode || !paymentMethod) {
             return res.status(400).json({
-                message: "All fields are required!",
+                message: "Required fields are missing",
                 success: false
-            })
+            });
         }
 
+       
+        const cartItemIds = itemId.map(item => item.cartItemIds);
+        
+   
+        const foodItems = await Food.find({ _id: { $in: cartItemIds } });
+        
+        if (!foodItems || foodItems.length === 0) {
+            return res.status(404).json({
+                message: "Food items not found",
+                success: false
+            });
+        }
 
-       const cartItemIds = itemId.map((item) => item.cartItemIds);
-    //    console.log("cartItemIds:", cartItemIds);
-       const cartItems = await Food.find({ _id: { $in: cartItemIds } });
-    //    console.log("cartItems:", cartItems);
-       if(!cartItems){
-        return res.status(400).json({
-            message:"CartItems not found!",
-            success:false
-        })
-       }
-
-    const totalAmount = cartItems.reduce((acc, item, index) => {
-        const quantity = itemId[index].quantity || 1;
-        return acc + (item.discountedPrice * quantity);
-    }, 0);
-  
-
-     const order = new OrderItems({
-        userId,
-        itemId:cartItemIds,
-        // quantity:totalQuantity, 
-        price:totalAmount*100,
-        name,
-        email,
-        mobile,
-        address,
-        street,
-        landmark,
-        state,
-        country,
-        postalCode,
-        paymentMethod
-     });
      
-     const options = {
-        amount: totalAmount * 100,
-        currency: "INR",
-        receipt: `order_${order._id}`,
-        payment_capture: 1,
-        notes: {
-            foodIds: cartItemIds,
-            userId: userId
-        }
-     }
-     const checkOut = await razorpay.orders.create(options);
-    //  console.log("Razorpay Checkout ID:", checkOut.id);
-     order.PaymentId = checkOut.id;
-    //  console.log("PaymentId:",order.PaymentId);
-     await order.save();
-     // Delete the cart items after successful order
-     await Cart.deleteMany({ userId });
-
-     return res.status(200).json({
-        message:"Order Placed Successfully!",
-        success:true,
-        data:order,
-        orderId:order._id,
-        checkoutId:checkOut.id,
-        product:cartItems.map((item , index)=>{
+        let totalAmount = 0;
+        const orderItems = foodItems.map((item, index) => {
+            const itemQuantity = quantity[index] || 1;
+            totalAmount += (item.discountedPrice * itemQuantity);
+            
             return {
-                name:item.name,
-                image:item.image,
-                discription:item.description,
-                price:item.price,
-                discountedPrice:item.discountedPrice,
-                off:item.discountPercentage+"%",
-                category:item.category,
-                category2:item.category2,
-                sizes:item.sizes,
-                quantity:itemId[index].quantity || 1,
-                totalPrice:item.discountedPrice * (itemId[index].quantity || 1)
+                foodId: item._id,
+                name: item.name,
+                price: item.discountedPrice,
+                quantity: itemQuantity
+            };
+        });
+
+        
+        const order = new OrderItems({
+            userId,
+            items: orderItems,
+            itemId: cartItemIds,
+            price: totalAmount * 100, 
+            name,
+            email,
+            mobile,
+            address,
+            street: street || "",
+            landmark: landmark || "",
+            state,
+            country,
+            postalCode,
+            paymentMethod,
+            orderStatus: paymentMethod === "cod" ? "Processing" : "Pending"
+        });
+
+        
+        if (paymentMethod === "cod") {
+            await order.save();
+            
+            await Cart.deleteMany({ userId });
+            
+            return res.status(200).json({
+                message: "COD Order Placed Successfully!",
+                success: true,
+                data: order,
+                orderId: order._id
+            });
+        }
+
+        const options = {
+            amount: Math.round(totalAmount * 100),
+            currency: "INR",
+            receipt: `receipt_${Date.now()}`,
+            payment_capture: 1,
+            notes: {
+                foodIds: cartItemIds.join(','),
+                userId: userId.toString()
             }
-        })
-    }
-    )
+        };
+
+        const razorpayOrder = await razorpay.orders.create(options);
+        
+        order.razorpayOrderId = razorpayOrder.id;
+        await order.save();
+
+        await Cart.deleteMany({ userId });
+
+        const productDetails = foodItems.map((item, index) => {
+            const itemQuantity = quantity[index] || 1;
+            return {
+                name: item.name,
+                image: item.image,
+                description: item.description,
+                price: item.price,
+                discountedPrice: item.discountedPrice,
+                off: item.discountPercentage + "%",
+                category: item.category,
+                category2: item.category2,
+                sizes: item.sizes,
+                quantity: itemQuantity,
+                totalPrice: item.discountedPrice * itemQuantity
+            };
+        });
+
+        return res.status(200).json({
+            message: "Order Placed Successfully!",
+            success: true,
+            data: order,
+            orderId: order._id,
+            checkoutId: razorpayOrder.id,
+            product: productDetails
+        });
     } catch (error) {
+        console.error("Error placing order:", error);
         return res.status(500).json({
-            message:"Internal Server Error "+error.message,
-            success:false ,  
-        })
+            message: "Internal Server Error: " + error.message,
+            success: false
+        });
     }
-}
+};
+// place order using case on delivery method
+const placeCodOrder = async (req, res) => {
+    try {
+        const userId = req.user?._id;
 
+        if (!userId) {
+            return res.status(401).json({
+                message: "User authentication required",
+                success: false
+            });
+        }
 
-//key
-const keyId = (req,res)=>{
+        const { 
+            itemId, 
+            quantity,
+            name, 
+            email,
+            mobile, 
+            address,
+            street, 
+            landmark,
+            state, 
+            country,
+            postalCode 
+        } = req.body;
+
+        if (!itemId || !name || !email || !mobile || !address || 
+            !state || !country || !postalCode) {
+            return res.status(400).json({
+                message: "Required fields are missing",
+                success: false
+            });
+        }
+
+        const cartItemIds = itemId.map(item => item.cartItemIds);
+        
+        const foodItems = await Food.find({ _id: { $in: cartItemIds } });
+        
+        if (!foodItems || foodItems.length === 0) {
+            return res.status(404).json({
+                message: "Food items not found",
+                success: false
+            });
+        }
+
+        let totalAmount = 0;
+        const orderItems = foodItems.map((item, index) => {
+            const itemQuantity = quantity[index] || 1;
+            totalAmount += (item.discountedPrice * itemQuantity);
+            
+            return {
+                foodId: item._id,
+                name: item.name,
+                price: item.discountedPrice,
+                quantity: itemQuantity
+            };
+        });
+
+        const order = new OrderItems({
+            userId,
+            items: orderItems,
+            itemId: cartItemIds,
+            price: totalAmount * 100,
+            name,
+            email,
+            mobile,
+            address,
+            street: street || "",
+            landmark: landmark || "",
+            state,
+            country,
+            postalCode,
+            paymentMethod: "cod",
+            orderStatus: "Processing"
+        });
+
+        await order.save();
+        
+        await Cart.deleteMany({ userId });
+        
+        return res.status(200).json({
+            message: "COD Order Placed Successfully!",
+            success: true,
+            data: order,
+            orderId: order._id
+        });
+    } catch (error) {
+        console.error("Error placing COD order:", error);
+        return res.status(500).json({
+            message: "Internal Server Error: " + error.message,
+            success: false
+        });
+    }
+};
+
+//get keyId
+const keyId = (req, res) => {
     return res.status(200).json({
-        key:process.env.RAZORPAY_KEY_ID,
-        successs:true
-    })
-}
+        key: process.env.RAZORPAY_KEY_ID,
+        success: true
+    });
+};
 
-
-// verify payment
+//verify payment
 const verifyPayments = async (req, res) => {
     try {
         const {
@@ -141,69 +268,52 @@ const verifyPayments = async (req, res) => {
             razorpay_payment_id,
             razorpay_signature
         } = req.body;
-console.log("req.body:", req.body);
-        // Log incoming params to check if they are correct
-        console.log("Received params for payment verification:");
-        console.log("razorpay_order_id:", razorpay_order_id);
-        console.log("razorpay_payment_id:", razorpay_payment_id);
-        console.log("razorpay_signature:", razorpay_signature);
 
-        // Check if all required fields are present
         if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
             return res.status(400).json({
-                message: "Missing parameters for verification!",
+                message: "Missing parameters for verification",
                 success: false
             });
         }
 
-        // Construct the body to generate signature
         const body = razorpay_order_id + "|" + razorpay_payment_id;
-        console.log("Generated body string:", body);
-
-        // Generate expected signature using the Razorpay secret key
         const expectedSignature = crypto
             .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
             .update(body.toString())
             .digest("hex");
 
-        // Log both expected and received signature
-        console.log("Expected Signature:", expectedSignature);
-        console.log("Received Signature:", razorpay_signature);
-
-        // Compare signatures
         const isAuthenticated = razorpay_signature === expectedSignature;
 
-        // If signatures don't match, fail the verification
         if (!isAuthenticated) {
             return res.status(400).json({
-                message: "Payment Verification Failed!",
+                message: "Payment verification failed: Invalid signature",
                 success: false
             });
         }
 
-        // Find the order from the database using the Razorpay order id
-        const purchase = await OrderItems.findOne({ PaymentId: razorpay_order_id });
+        const order = await OrderItems.findOne({ razorpayOrderId: razorpay_order_id });
 
-        if (!purchase) {
-            return res.status(400).json({
-                message: "Order Not Found!",
+        if (!order) {
+            return res.status(404).json({
+                message: "Order not found",
                 success: false
             });
         }
 
-        // Update the order with the payment ID
-        purchase.razorpayPaymentId = razorpay_payment_id;
-        await purchase.save();
+        order.razorpayPaymentId = razorpay_payment_id;
+        order.orderStatus = "Processing";
+        order.paymentStatus = "Paid";
+        await order.save();
 
         return res.status(200).json({
-            message: "Payment Verified Successfully!",
+            message: "Payment verified successfully",
             success: true,
-            data: purchase
+            data: order
         });
     } catch (error) {
         console.error("Error during payment verification:", error);
         return res.status(500).json({
-            message: "Internal Server Error " + error.message,
+            message: "Internal Server Error: " + error.message,
             success: false
         });
     }
@@ -401,9 +511,9 @@ const allOrders = async(req,res)=>{
     }
 }
 
-
 export {
     placeOrder,
+    placeCodOrder,
     keyId,
     verifyPayments,
     userOrders,
@@ -412,7 +522,6 @@ export {
     deleteOrderItem,
     allOrders
 }
-
 
 
 
