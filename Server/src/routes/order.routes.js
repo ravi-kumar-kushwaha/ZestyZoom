@@ -4,7 +4,7 @@ import {
   deleteOrderItem,
   getSingleOrder,
   keyId,
-//   paymentVerification,
+  placeCodOrder,
   placeOrder,
   updateOrderItem,
   userOrders,
@@ -14,14 +14,13 @@ import verifyToken from "../middlewares/auth.js";
 
 const router = express.Router();
 router.post("/place-order", verifyToken, placeOrder);
-router.post("/verify-order",verifyToken,verifyPayments);
+router.post("/place-cod-order", verifyToken, placeCodOrder);
+router.post("/verify-order",verifyPayments);
 router.get("/user-orders", verifyToken, userOrders);
 router.get("/single-order/:orderId", verifyToken, getSingleOrder);
 router.put("/update-orderItem/:orderId", verifyToken, updateOrderItem);
 router.delete("/delete-orderItem/:orderId", verifyToken, deleteOrderItem);
 router.get("/all-orders", verifyToken, allOrders);
-
-// router.post("/verify-order", verifyToken, paymentVerification);
 
 router.get("/get-key", keyId);
 export default router;
